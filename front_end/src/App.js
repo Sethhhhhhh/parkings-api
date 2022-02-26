@@ -1,21 +1,25 @@
-import React, { useEffect, useState } from 'react';
-import axios from 'axios';
+import { Component } from 'react';
+import API from './utils/api';
 
-export default class App extends React.Component {
-	const [parkings, setParkings] = useState([]);
+export default class App extends Component {
+	state = {
+		parkings: []
+	}
 
 	componentDidMount() {
-		axios.get(`http://127.0.0.1:8080/parkings`)
-		.then(res => {
-			const persons = res.data;
-			setParkings({ persons });
+		API.get('/parkings')
+			.then(response => {
+				this.setState({ parkings: response.data });
 		})
 	}
 
+	
 	render() {
 		return (
 			<ul>
-				{ this.state.persons.map(person => <li>{person.name}</li>)}
+				{this.state.parkings.map (parking => 
+					<li>{parking.name}</li>
+				)}
 			</ul>
 		)
 	}
